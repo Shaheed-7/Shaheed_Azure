@@ -2,6 +2,14 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
+variables:
+  Azure_DevOps_SPN_Shaheed: 'Azure for Students (842ff4f6-a3c2-4c14-b258-72924ab302a5)'
+
+trigger:
+  paths:
+    include:
+      - AdApps
+
 
 steps:
 - script: echo Hello, world!
@@ -11,6 +19,7 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
 
 - task: PowerShell@2
   inputs:
