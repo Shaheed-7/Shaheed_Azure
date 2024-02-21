@@ -1,6 +1,6 @@
 param(
     [string]$SourceKV = 'KV-Shaheed',
-    [string]$OriginalSecretName = 'VeryImp',
+    [string]$OriginalSecretName = 'VeryImp1',
     [string]$DestinationKV = 'KV-Shaheed-Copy',
     [string]$DestinationSecretName = 'VeryImp-copy'
 )
