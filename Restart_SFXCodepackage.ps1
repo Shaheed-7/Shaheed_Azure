@@ -40,7 +40,7 @@ $query = @"
  
 try {
     # Get the connection "AzureRunAsConnection"
-    $Conn = Get-AutomationConnection -Name 'EssRunAsConnection'
+    $Conn = Get-AutomationConnection -Name ''
   
     #Connect to Azure Account
     $connectAz= Connect-AzAccount -CertificateThumbprint $Conn.CertificateThumbprint -ApplicationId $Conn.ApplicationId -Tenant $Conn.TenantId -ServicePrincipal  
@@ -122,30 +122,19 @@ try {
         }
        
     }
-    
-    <#do {
-        $sfUrl =  "SF Endpoint"
-        Connect-SFCluster -X509Credential -ClientCertificate $certCollection[0] -ConnectionEndpoint $sfUrl -ServerCertThumbprint $certCollection[0].Thumbprint
-            start-sleep -seconds 3
-            $nodedetails = Get-SFNode -NodeName "_prdemean_$instance"
-        }
-        while ($nodedetails.NodeStatus.ToString() -ne "Up")
-        $nodedetails = Get-SFNode -NodeName "_prdemean_$instance"         
-        $node.NodeName = $nodedetails.Name.ToString()
-        $node.Status = $nodedetails.NodeStatus.ToString()
-        write-output $nodeDetails#>        
+          
     if($count -gt 0){   
         Write-Output "Query returned $count results"  
         $htmlTable = @()
         $dateTime = Get-Date
-        $Mailmessage = "Business Logic -Nodes Restart Summary"
+        $Mailmessage = ""
         $htmlbody = "<div>$Mailmessage</div><h4><font color=green>Execution Time: $($dateTime)</font></h4>"
         $table | foreach-object{        
             $htmlTable += New-Object PSObject -Property $_          
         }
         $htmlbody = $htmlbody + ($htmlTable | ConvertTo-Html -Fragment) + "<br>"
         
-        #fetching Send Grid API key and sending Reports through mail
+        #fetching key and sending Reports through mail
         $Subject = ""
         $APIkey = Get-AutomationVariable -Name ''
         if ($APIkey) {     
@@ -153,13 +142,6 @@ try {
         }
         else { 
             Write-Output ("Automation variable of key is not found.")
-        } 
-        $jsonString = $htmlTable | ConvertTo-Json
-        write-output($htmlTable)
-        write-output($jsonString)
-        if ($jsonString) {
-            Write-output "Trigger Runbook to log data to Log Analytics"
-            .\RUN-PushEventsToMonitoring.ps1 -jsonBody  $jsonString -logType 'Name of table'
         } 
     }
     else{
